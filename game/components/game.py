@@ -2,7 +2,7 @@ import pygame
 
 # game.utils.constants -> es un modulo donde tengo "objetos" en memoria como el BG (background)...etc
 #   tambien tenemos valores constantes como el title, etc
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, SPACESHIP
 
 # Game es la definicion de la clase (plantilla o molde para sacar objetos)
 # self es una referencia que indica que el metodo o el atributo es de cada "objeto" de la clase Game
@@ -17,6 +17,9 @@ class Game:
         self.game_speed = 10
         self.x_pos_bg = 0
         self.y_pos_bg = 0
+        self.x_pos_player = 0
+        self.y_pos_player = 0
+        self.speed = 0
 
     # este es el "game loop"
     # # Game loop: events - update - draw
@@ -37,12 +40,45 @@ class Game:
         for event in pygame.event.get(): # con el for sacamos cada evento del "iterable"
             if event.type == pygame.QUIT: # pygame.QUIT representa la X de la ventana
                 self.playing = False
-
+            
+            
+           # elif event.type == pygame.KEYDOWN:
+            #if event.type == pygame.K_LEFT:
+             #     self.speed = -3
+            #if event.type == pygame.K_RIGHT:
+             #     self.speed = 3
+           # elif event.type == pygame.KEYUP:
+            #   if event.key == pygame.K_LEFT:
+             #     self.speed = -3
+              # if event.key == pygame.K_RIGHT:
+               #   self.speed = 3
+            
+        
+        
+        
     # aca escribo ALGO de la logica "necesaria" -> repartimos responsabilidades entre clases
     # o sea aqui deberia llamar a los updates de mis otros objetos
     # si tienes un spaceship; el spaceship deberia tener un "update" method que llamamos desde aqui
     def update(self):
-        pass
+        image_player= pygame.key.get_pressed
+        self.player(image_player)
+        
+    
+
+        
+       # user_input = pygame.key.get_pressed()
+      #  self.update_player(user_input) 
+        #self.speed = 0
+        #self.x_pos_player = 0
+        #keystate = pygame.key.get_pressed()
+        #if self.playing:
+         #   user_input = pygame.key.get_pressed()
+          #  if user_input[pygame.K_LEFT]:
+           #  self.speed = -5
+            #if user_input[pygame.K_RIGHT]:
+             # self.speed = 10
+
+            #self.x_pos_player -+ self.speed
 
     # este metodo "dibuja o renderiza o refresca mis cambios en la pantalla del juego"
     # aca escribo ALGO de la logica "necesaria" -> repartimos responsabilidades entre clases
@@ -52,8 +88,13 @@ class Game:
         self.clock.tick(FPS) # configuramos cuantos frames dibujaremos por segundo
         self.screen.fill((255, 255, 255)) # esta tupla (255, 255, 255) representa un codigo de color: blanco
         self.draw_background()
+        self.player()
         pygame.display.update()
         pygame.display.flip()
+
+
+
+
 
     def draw_background(self):
         # le indicamos a pygame que transforme el objeto BG (que es una imagen en memoria, no es un archivo)
@@ -61,6 +102,7 @@ class Game:
         image = pygame.transform.scale(BG, (SCREEN_WIDTH, SCREEN_HEIGHT))
         # obtenemos el alto de la imagen
         image_height = image.get_height()
+
         ## DIBUJAMOS dos veces para dar la impresion de que nos movemos en el spacio
         # blit DIBUJA la imagen en memoria en una posicion (x, y)
         self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg))
@@ -75,3 +117,47 @@ class Game:
         # No hay una velocidad de juego como tal, el "game_speed" simplemente me indica
         # cuanto me voy a mover (cuantos pixeles hacia arriba o abajo) cen el eje Y
         self.y_pos_bg += self.game_speed
+
+    def player(self):
+
+        
+        image_player = pygame.transform.scale(SPACESHIP, (100,100))
+        self.x_pos_player = 490
+        self.y_pos_player = 250
+        self.speed = 0
+
+        # self.rect = image_player.get_rect(self.x_pos_bg,self.y_pos_bg,100,100)
+        #image_width = image_player.get_width
+        self.screen.blit(image_player, (self.x_pos_player , self.y_pos_player))
+
+
+        image_player= pygame.key.get_pressed()
+        if image_player[pygame.K_LEFT]:
+           self.speed = -5
+        if image_player[pygame.K_RIGHT]:
+           self.speed = 5
+        self.x_pos_player += self.speed
+    
+    
+
+
+        
+      #if self.x_pos_bg >= SCREEN_WIDTH:
+            # dibujo la imagen
+         #   self.screen.blit(image_player (self.x_pos_bg, self.y_pos_bg - image_width))
+            # reseteo la posicion en y
+          #  self.x_pos_bg = 0
+        # No hay una velocidad de juego como tal, el "game_speed" simplemente me indica
+        # cuanto me voy a mover (cuantos pixeles hacia arriba o abajo) cen el eje Y
+        #self.x_pos_bg += self.game_speed
+
+        
+        
+
+
+
+    
+
+
+
+        
