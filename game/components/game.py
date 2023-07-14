@@ -1,11 +1,7 @@
 import pygame
-
-# game.utils.constants -> es un modulo donde tengo "objetos" en memoria como el BG (background)...etc
-#   tambien tenemos valores constantes como el title, etc
+from game.components.spaceship import Player
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, SPACESHIP
 
-# Game es la definicion de la clase (plantilla o molde para sacar objetos)
-# self es una referencia que indica que el metodo o el atributo es de cada "objeto" de la clase Game
 class Game:
     def __init__(self):
         pygame.init() # este es el enlace con la libreria pygame para poder mostrar la pantalla del juego
@@ -17,9 +13,8 @@ class Game:
         self.game_speed = 10
         self.x_pos_bg = 0
         self.y_pos_bg = 0
-        self.x_pos_player = 0
-        self.y_pos_player = 0
-        self.speed = 0
+        self.player = Player()
+        
 
     # este es el "game loop"
     # # Game loop: events - update - draw
@@ -53,17 +48,13 @@ class Game:
               # if event.key == pygame.K_RIGHT:
                #   self.speed = 3
             
-        
-        
-        
+           
     # aca escribo ALGO de la logica "necesaria" -> repartimos responsabilidades entre clases
     # o sea aqui deberia llamar a los updates de mis otros objetos
     # si tienes un spaceship; el spaceship deberia tener un "update" method que llamamos desde aqui
     def update(self):
-        image_player= pygame.key.get_pressed
-        self.player(image_player)
-        
-    
+        user_input = pygame.key.get_pressed()  # Obtener el estado actual de todas las teclas
+        self.player.update(user_input)
 
         
        # user_input = pygame.key.get_pressed()
@@ -88,12 +79,9 @@ class Game:
         self.clock.tick(FPS) # configuramos cuantos frames dibujaremos por segundo
         self.screen.fill((255, 255, 255)) # esta tupla (255, 255, 255) representa un codigo de color: blanco
         self.draw_background()
-        self.player()
+        self.player.draw()
         pygame.display.update()
         pygame.display.flip()
-
-
-
 
 
     def draw_background(self):
@@ -118,30 +106,10 @@ class Game:
         # cuanto me voy a mover (cuantos pixeles hacia arriba o abajo) cen el eje Y
         self.y_pos_bg += self.game_speed
 
-    def player(self):
-
-        
-        image_player = pygame.transform.scale(SPACESHIP, (100,100))
-        self.x_pos_player = 490
-        self.y_pos_player = 250
-        self.speed = 0
-
-        # self.rect = image_player.get_rect(self.x_pos_bg,self.y_pos_bg,100,100)
-        #image_width = image_player.get_width
-        self.screen.blit(image_player, (self.x_pos_player , self.y_pos_player))
-
-
-        image_player= pygame.key.get_pressed()
-        if image_player[pygame.K_LEFT]:
-           self.speed = -5
-        if image_player[pygame.K_RIGHT]:
-           self.speed = 5
-        self.x_pos_player += self.speed
-    
     
 
-
         
+            
       #if self.x_pos_bg >= SCREEN_WIDTH:
             # dibujo la imagen
          #   self.screen.blit(image_player (self.x_pos_bg, self.y_pos_bg - image_width))
