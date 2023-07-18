@@ -55,6 +55,4 @@ class Player(Sprite):
 
     def draw(self):
         self.screen.blit(self.image_player, (self.x_pos_player , self.y_pos_player))      
-       
-       # label
         self.screen.blit(self.name_text, (self.x_pos_player, self.y_pos_player - 30))

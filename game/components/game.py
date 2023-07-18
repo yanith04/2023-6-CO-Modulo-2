@@ -1,7 +1,7 @@
 import pygame
 from game.components.spaceship import Player
 from game.components.enemy import Enemy
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 
 class Game:
     def __init__(self):
@@ -15,11 +15,7 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.player = Player("xwing")
-        self.enemies =Enemy[dv1,dv2]
-
-        dv1 = Enemy("dv1")
-        dv2 = Enemy("dv2")
-
+        self.enemy = Enemy("dv1")
         
 
         
@@ -46,8 +42,6 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()  
         self.player.update(user_input)
-       # for self.enemy in self.enemies:
-        #    self.enemy.update()
 
 
     def draw(self):
@@ -55,8 +49,7 @@ class Game:
         self.screen.fill((255, 255, 255)) 
         self.draw_background()
         self.player.draw()
-        for enemy in self.enemies:
-            enemy.draw()
+        self.enemy.draw()
         pygame.display.update()
         pygame.display.flip()
 
