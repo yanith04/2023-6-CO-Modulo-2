@@ -1,16 +1,15 @@
-import pygame
-from pygame.sprite import Sprite
 from game.utils.constants import SCREEN_HEIGHT
-
+from pygame.sprite import Sprite
 
 class Bullet(Sprite):
-
+    WIDTH = 0
+    HEIGHT = 0
     SPEED = 0
 
     def __init__(self, image, origin):
         super().__init__()
         self.image = image
-        self.rect = image.get_rect()
+        self.rect = self.image.get.rect()
         self.rect.center = origin
         self.is_alive = False
 

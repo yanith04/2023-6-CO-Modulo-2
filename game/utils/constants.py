@@ -36,7 +36,38 @@ ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
 
 FONT_STYLE = 'freesansbold.ttf'
 
-#bullet constants
+# Movement constants
+LEFT = 'left'
+RIGHT = 'right'
+UP = 'up'
+DOWN = 'down'
+
+# Enemies constants
+ENEMY_DV1_TYPE = 'dv1'
+ENEMY_DV2_TYPE = 'dv2'
+ENEMY_DV3_TYPE = 'dv3'
+ENEMIES_TYPES = [ENEMY_DV1_TYPE, ENEMY_DV2_TYPE, ENEMY_DV3_TYPE]
+
+EASY_LEVEL_MAX_ENEMIES = 3
+MEDIUM_LEVEL_MAX_ENEMIES = 5
+HARD_LEVEL_MAX_ENEMIES = 7
+
+EASY_LEVEL_ENEMY_SPAWNS = [3, 1, 0]
+MEDIUM_LEVEL_ENEMY_SPAWNS = [4, 2, 1]
+HARD_LEVEL_ENEMY_SPAWNS = [1, 2, 1]
+
+# Bullet constants
 BULLET_ENEMY_TYPE = 'enemy'
 BULLET_PLAYER_TYPE = 'player'
+
+# Custom events
+SPAWN_ENEMY = pygame.USEREVENT + 1
+ENEMY_DV1_SHOOT = pygame.USEREVENT + 2
+ENEMY_DV2_SHOOT = pygame.USEREVENT + 3
+ENEMY_DV3_SHOOT = pygame.USEREVENT + 4
+ENEMY_SHOOT = pygame.USEREVENT + 5
+
+# Color
+BLACK_COLOR = (0, 0, 0)
+WHITE_COLOR = (255, 255 ,255)
 

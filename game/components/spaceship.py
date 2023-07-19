@@ -1,17 +1,23 @@
 import pygame
 from pygame.sprite import Sprite
 from game.utils.constants import SPACESHIP,SCREEN_WIDTH,SCREEN_HEIGHT, FPS, BULLET_PLAYER_TYPE
+from game.components.bullets.bullet_hadler import BulletHandler
 
 class Player(Sprite):
     BLINK_DURATION_SECS = 2
     BLINK_DURATION_CYCLES = BLINK_DURATION_SECS * FPS
-    ALPHA_INTERVAL = (255 // (FPS // 2))   
+    ALPHA_INTERVAL = (255 // (FPS // 2)) 
+    WIDTH = 40
+    HEIGTH = 60
+    X_POS = (SCREEN_WIDTH // 2) - WIDTH
+    Y_POS = 500  
     def __init__(self, name,):
         super().__init__()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.image = pygame.transform.scale(SPACESHIP, (80,80))
-        self.x_pos_player = 460
-        self.y_pos_player = 460
+        self.image = pygame.transform.scale(SPACESHIP, (self.WIDTH,self.HEIGTH))
+        self.rect = self.image.get_rect()
+        self.rect.x = self.X_POS
+        self.rect.y = self.Y_POS
         self.speed = 10
         self.limit_y = 300
         font = pygame.font.SysFont(None, 24)
@@ -22,6 +28,7 @@ class Player(Sprite):
         self.is_visible = True
         self.cycles = self.BLINK_DURATION_CYCLES
         self.alpha_value = 255
+        self.bullet_handler = BulletHandler()
 
     def update(self, user_input):
         if user_input[pygame.K_LEFT]  or user_input[pygame.K_a] :
@@ -40,16 +47,16 @@ class Player(Sprite):
 
 
     def move_left(self):
-        self.x_pos_player -= self.speed
+        self.rect.x -= self.speed
         self.display_limit()
     def move_right(self):
-        self.x_pos_player += self.speed
+        self.rect.x += self.speed
         self.display_limit()
     def move_up(self):
-        self.y_pos_player -= self.speed
+        self.rect.y -= self.speed
         self.display_limit()
     def move_down(self):
-        self.y_pos_player += self.speed
+        self.rect.y += self.speed
         self.display_limit()
 
     def kill(self):
@@ -83,24 +90,32 @@ class Player(Sprite):
         self.is_blinking = True
         self.cycles = 0
 
-    def shoot(self, bullet_handler):
-        bullet_handler.add_bullet(BULLET_PLAYER_TYPE, self.rect.center)
-            
+    def shoot(self):
+        self.bullet_handler.add_bullet(BULLET_PLAYER_TYPE, self.rect.center)
+
 
     def display_limit(self):
-        if self.x_pos_player < 0:
-           self.x_pos_player= 0
-        if self.x_pos_player > SCREEN_WIDTH - 80:    
-           self.x_pos_player = SCREEN_WIDTH - 80
-         
-                        
-        if self.y_pos_player < self.limit_y: 
-           self.y_pos_player = self.limit_y 
-        if self.y_pos_player > SCREEN_HEIGHT - 80:
-           self.y_pos_player = SCREEN_HEIGHT - 80
+        if self.rect.x < 0:
+           self.rect.x = 0
+        if self.rect.x > SCREEN_WIDTH - 80:    
+           self.rect.x = SCREEN_WIDTH - 80
+                             
+        if self.rect.y < self.limit_y: 
+           self.rect.y = self.limit_y 
+        if self.rect.y > SCREEN_HEIGHT - 80:
+           self.rect.y = SCREEN_HEIGHT - 80
     
 
     def draw(self):
-        self.screen.blit(self.image, (self.x_pos_player , self.y_pos_player))
-       # self.screen.blit(self.image_bullet, (self.x_pos_player , self.y_pos_player))      
-        self.screen.blit(self.name_text, (self.x_pos_player, self.y_pos_player - 30))
+        self.screen.blit(self.image, (self.rect.x , self.rect.y))     
+        self.screen.blit(self.name_text, (self.rect.x, self.rect.y - 30))
+
+    def reset(self):
+        self.is_alive = True
+        self.lifes = 3
+        self.is_blinking = False
+        self.is_visible = True
+        self.cycles = self.BLINK_DURATION_CYCLES
+        self.alpha_value = 255
+        self.rect.x = self.X_POS
+        self.rect.y = self.Y_POS

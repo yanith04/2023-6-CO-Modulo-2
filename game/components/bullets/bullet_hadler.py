@@ -1,13 +1,14 @@
 import pygame
-
 from game.components.bullets.bullet_enemy import BulletEnemy
 from game.components.bullets.bullet_player import BulletPlayer
-
+from game.components.bullets.bullet import Bullet
+from game.components.bullets.bullet_factory import BulletFactory
 
 class BulletHandler:
-    def __init__(self, bullet_factory):
+    def __init__(self):
         self.bullets = pygame.sprite.Group()
-        self.bullet_factory = bullet_factory
+        self.bullet_factory = BulletFactory()
+        self.bullet = Bullet()
 
     def update(self, player, enemies):
         for bullet in self.bullets:
