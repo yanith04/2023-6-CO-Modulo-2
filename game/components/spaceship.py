@@ -33,10 +33,13 @@ class Player(Sprite):
     def update(self, user_input):
         if user_input[pygame.K_LEFT]  or user_input[pygame.K_a] :
             self.move_left()
+            print("move left")
         if user_input[pygame.K_RIGHT] or user_input[pygame.K_d] :
            self.move_right()
+           print("move right")
         if user_input[pygame.K_UP] or user_input[pygame.K_w] :
             self.move_up()
+            print("move up")
         if user_input[pygame.K_DOWN] or user_input[pygame.K_s] :
             self.move_down()
         
