@@ -1,11 +1,11 @@
 import pygame
 from pygame.sprite import Group
 from pygame.sprite import Sprite
-from game.utils.constants import SPACESHIP,SCREEN_WIDTH,SCREEN_HEIGHT, HEART
+from game.utils.constants import SPACESHIP,SCREEN_WIDTH,SCREEN_HEIGHT
 from game.components.bullet import Bullet
 
 class Player(Sprite):   
-    def __init__(self, name, starting_lives=3):
+    def __init__(self, name):
         super().__init__()
         self.image_player = pygame.transform.scale(SPACESHIP, (50,50))
         self.rect = self.image_player.get_rect()
@@ -15,7 +15,8 @@ class Player(Sprite):
         font = pygame.font.SysFont(None, 24)
         self.name_text = font.render(f"Player:{name}", True, (255, 255, 255))
         self.bullets_player = Group()
-        self.lives = starting_lives
+
+        
       
 
 
@@ -37,6 +38,8 @@ class Player(Sprite):
             self.shoot_bullet()
             print("shoot bullet") 
         self.update_bullet_trajectory()
+
+
 
 
     def move_left(self):
@@ -76,23 +79,13 @@ class Player(Sprite):
             if bullet.rect.y < 0:
                self.bullets_player.remove(bullet)
 
-    def remove_life(self):
-        self.lives -= 1
-        if self.lives <= 0:
-            # Aquí puedes tomar alguna acción cuando el jugador se queda sin vidas,
-            # como terminar el juego o mostrar un mensaje de "Game Over".
-            print("Game Over")
 
-    def draw_lives(self, screen):
-        for i in range(self.lives):
-            heart_x = SCREEN_WIDTH - 30 - i * 30
-            heart_y = 10
-            screen.blit(HEART, (heart_x, heart_y))
     
 
     def draw(self,screen):
         screen.blit(self.image_player, (self.rect.x , self.rect.y))      
         screen.blit(self.name_text, (self.rect.x, self.rect.y - 30))
         self.bullets_player.draw(screen)
+    
 
 
