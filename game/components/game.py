@@ -2,10 +2,12 @@ import pygame
 from game.components.spaceship import Player
 from game.components.enemy import Enemy
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from game.components.bullet import Bullet
+from pygame.sprite import Group
 
 
 class Game:
-    def __init__(self, num_enemies = 10):
+    def __init__(self, num_enemies = 5):
         pygame.init() 
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
@@ -23,6 +25,9 @@ class Game:
         self.enemies = []
         self.num_enemies = num_enemies
         pygame.time.set_timer(pygame.USEREVENT, 1000)
+        self.enemies = Group() 
+
+
 
    
        
@@ -47,12 +52,13 @@ class Game:
                 # Comprobar si el temporizador ha expirado
             if event.type == pygame.USEREVENT:
                 self.add_enemy()
+
     
     def add_enemy(self):
         if len(self.enemies) < self.num_enemies:
             enemy_name = f"ENEMY{len(self.enemies) + 1}"
             new_enemy = Enemy(enemy_name)
-            self.enemies.append(new_enemy)
+            self.enemies.add(new_enemy)
 
 
     def update(self):
@@ -64,14 +70,12 @@ class Game:
         #ENEMY
         for enemy in self.enemies:
             enemy.update()
-        
-        for enemy in self.enemies:
-            if enemy.rect.right < 0 or enemy.rect.left > SCREEN_WIDTH or enemy.rect.top > SCREEN_HEIGHT or enemy.rect.bottom < 0:
-                self.playing = False
-                break
-        
-        
 
+        # Verificar colisión entre el jugador y los enemigos
+        if pygame.sprite.spritecollide(self.player, self.enemies, dokill=True):
+            self.playing = False
+            print("¡Has chocado con un enemigo! El juego ha terminado.")
+           
         
     def draw(self):
         self.clock.tick(FPS) 
@@ -80,6 +84,7 @@ class Game:
         self.player.draw(self.screen)
         for enemy in self.enemies:
             enemy.draw(self.screen)
+        
         
         pygame.display.update()
         pygame.display.flip()
